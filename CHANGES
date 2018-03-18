@@ -1,0 +1,8 @@
+Changes for 1.0.20:
+
+* Cleaned up source code and moved source code to Github
+* Code originally released at http://www.end2endzone.com/csvplot-a-command-line-script-which-uses-microsoft-excel-to-plot-a-graph-from-a-comma-separated-values-csv-file/
+
+Changes for 1.0.19:
+
+* First public release.

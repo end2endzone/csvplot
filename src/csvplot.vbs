@@ -1,5 +1,5 @@
 '
-'  csvplot - v1.0.0
+'  csvplot - v1.0.20
 '  Copyright (C) 2016 Antoine Beauchamp
 '  The following code was written by Antoine Beauchamp. For other authors, see AUTHORS file.
 '  The code & updates for the library can be found at http://github.com/end2endzone/csvplot
@@ -38,7 +38,7 @@
 '  then using the power of Excel to plot the result into an image.
 '
 ' HISTORY:
-' 03/08/2016 v1.0.0 - Initial release.
+' 03/08/2016 v1.0.19 - Initial release.
 '
 
 'Validate command line arguments
