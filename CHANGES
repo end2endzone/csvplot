@@ -1,6 +1,8 @@
 Changes for 1.0.20:
 
-* Cleaned up source code and moved source code to Github
+* Cleaned up source code
+* Moved source code to Github
+* Changed licensing from GNU Lesser General Public License (LGPLv3.0) to MIT License.
 * Code originally released at http://www.end2endzone.com/csvplot-a-command-line-script-which-uses-microsoft-excel-to-plot-a-graph-from-a-comma-separated-values-csv-file/
 
 Changes for 1.0.19:
