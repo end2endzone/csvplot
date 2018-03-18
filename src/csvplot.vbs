@@ -114,8 +114,8 @@ dataTypes = Array( Array(1, vbFormatText) _
   , Array(2, vbFormatStandard) _
   , Array(3, vbFormatText) _
   , Array(4, vbFormatDate) _
-  )
-  
+)
+
 'set xlBook = xlApp.WorkBooks.Open(inputFilePath)
 xlApp.Workbooks.OpenText inputFilePath, , , xlDelimited, xlDoubleQuote, False, False, True, , , , dataTypes
 set xlBook = xlApp.ActiveWorkbook
@@ -137,7 +137,7 @@ For i = 4 to WScript.Arguments.Count - 1 Step 2
   xColumnIndex = CInt(WScript.Arguments.Item(i))
   yColumnIndex = CInt(WScript.Arguments.Item(i+1))
   Wscript.Echo "Plotting series of columns " & xColumnIndex & " and " & yColumnIndex & "..."
-
+  
   CreateChartSerie xlApp, xColumnIndex, yColumnIndex
 Next
 
@@ -171,17 +171,17 @@ End If
 'Creates a new empty Chart on the current active sheet
 '
 Sub CreateNewEmptyChart(xlApp)
-    xlApp.ActiveSheet.Shapes.AddChart.Select
-
-    xlApp.ActiveChart.ChartType = xlXYScatterLinesNoMarkers
-    xlApp.ActiveChart.SeriesCollection.NewSeries
-    
-    'Delete any series that Excel might have automaticaly created for us
-    'msgbox "xlApp.ActiveChart.SeriesCollection.Count=" & xlApp.ActiveChart.SeriesCollection.Count
-    While xlApp.ActiveChart.SeriesCollection.Count <> 0
-        xlApp.ActiveChart.SeriesCollection(1).Delete
-    Wend
-    'msgbox "xlApp.ActiveChart.SeriesCollection.Count=" & xlApp.ActiveChart.SeriesCollection.Count
+  xlApp.ActiveSheet.Shapes.AddChart.Select
+  
+  xlApp.ActiveChart.ChartType = xlXYScatterLinesNoMarkers
+  xlApp.ActiveChart.SeriesCollection.NewSeries
+  
+  'Delete any series that Excel might have automaticaly created for us
+  'msgbox "xlApp.ActiveChart.SeriesCollection.Count=" & xlApp.ActiveChart.SeriesCollection.Count
+  While xlApp.ActiveChart.SeriesCollection.Count <> 0
+    xlApp.ActiveChart.SeriesCollection(1).Delete
+  Wend
+  'msgbox "xlApp.ActiveChart.SeriesCollection.Count=" & xlApp.ActiveChart.SeriesCollection.Count
 End Sub
 
 '
@@ -196,18 +196,18 @@ End Function
 ' ie: "=Sheet1!$A$2:$A$37"
 '
 Function GetColumnRange(xlApp, columnIndex)
-    dim str
-    str = "='" & xlApp.ActiveSheet.Name & "'!"
-
-    'Find the address of the second row of the given column
-    str = str & xlApp.ActiveSheet.Columns(columnIndex).Rows(2).Address 'rows 1 is the column's title
-
-    str = str & ":"
-
-    'Find the address of the last row of the given column
-    str = str & xlApp.ActiveSheet.Columns(columnIndex).End(xlDown).Address 'rows 1 is the column's title
-
-    GetColumnRange = str
+  dim str
+  str = "='" & xlApp.ActiveSheet.Name & "'!"
+  
+  'Find the address of the second row of the given column
+  str = str & xlApp.ActiveSheet.Columns(columnIndex).Rows(2).Address 'rows 1 is the column's title
+  
+  str = str & ":"
+  
+  'Find the address of the last row of the given column
+  str = str & xlApp.ActiveSheet.Columns(columnIndex).End(xlDown).Address 'rows 1 is the column's title
+  
+  GetColumnRange = str
 End Function
 
 '
@@ -216,10 +216,10 @@ End Function
 '
 Sub CreateChartSerie(xlApp, xColumnIndex, yColumnIndex)
   xlApp.ActiveChart.SeriesCollection.NewSeries
-
+  
   dim serieIndex
   serieIndex = xlApp.ActiveChart.SeriesCollection.Count
-
+  
   dim serieName
   serieName = GetColumnTitle(xlApp, yColumnIndex)
   
@@ -239,9 +239,7 @@ End Sub
 'to get the minimum size axes.
 '
 Sub OptimizeChartUnitAxes(xlApp)
-
   'Find best X axis
-
   dim minX
   dim serieMinX
   dim maxX
@@ -258,12 +256,11 @@ Sub OptimizeChartUnitAxes(xlApp)
       maxX = serieMaxX
     end if
   next
-
+  
   'msgbox minX
   'msgbox maxX
-
+  
   'Find best Y axis
-
   dim minY
   dim serieMinY
   dim maxY
@@ -280,10 +277,10 @@ Sub OptimizeChartUnitAxes(xlApp)
       maxY = serieMaxY
     end if
   next
-
+  
   'msgbox minY
   'msgbox maxY
-
+  
   'Apply scale minimum and maximum
   xlApp.ActiveChart.Axes(xlCategory).MinimumScale = minX
   xlApp.ActiveChart.Axes(xlCategory).MaximumScale = maxX
@@ -293,7 +290,7 @@ Sub OptimizeChartUnitAxes(xlApp)
   'Ask Excel to compute MajorUnit for X and Y axes
   xlApp.ActiveChart.Axes(xlValue).MajorUnitIsAuto = True
   xlApp.ActiveChart.Axes(xlCategory).MajorUnitIsAuto = True
-
+  
   'Compute better axes limits
   minX = Floor(minX, xlApp.ActiveChart.Axes(xlCategory).MajorUnit)
   maxX = Ceiling(maxX, xlApp.ActiveChart.Axes(xlCategory).MajorUnit)
@@ -319,43 +316,44 @@ Function SaveActiveChartAsPng(xlApp, outputFilePath, imageWidth, imageHeight) 'A
   Dim currentHeight
   currentWidth = xlApp.ActiveChart.Parent.Width
   currentHeight = xlApp.ActiveChart.Parent.Height
-    
+  
   'Resize chart to desired resolution
   xlApp.ActiveChart.Parent.Width = Pixels2Points(imageWidth)
   xlApp.ActiveChart.Parent.Height = Pixels2Points(imageHeight)
-    
+  
   'Delete existing file
   On Error Resume Next
   Kill outputFilePath
   On Error GoTo 0
-
+  
   SaveActiveChartAsPng = xlApp.ActiveChart.Export(outputFilePath, "PNG", False)
-    
+  
   'Restore chart's dimension
   xlApp.ActiveChart.Parent.Width = currentWidth
   xlApp.ActiveChart.Parent.Height = currentHeight
 End Function
 
 Function Points2Pixels(points)
-    Dim pixels: pixels = 1.3333 * points + 0.6667
-    Points2Pixels = pixels
+  Dim pixels: pixels = 1.3333 * points + 0.6667
+  Points2Pixels = pixels
 End Function
 
 Function Pixels2Points(pixels)
-    Dim points: points = 0.75 * pixels - 0.5
-    Pixels2Points = points
+  Dim points: points = 0.75 * pixels - 0.5
+  Pixels2Points = points
 End Function
 
 'http://stackoverflow.com/questions/1776001/ceiling-function-in-access
 'Public Function Ceiling(ByVal X As Double, Optional ByVal Factor As Double = 1) As Double
 Public Function Ceiling(X, Factor)
-    ' X is the value you want to round
-    ' Factor is the optional multiple to which you want to round, defaulting to 1
-    Ceiling = (Int(X / Factor) - (X / Factor - Int(X / Factor) > 0)) * Factor
+  ' X is the value you want to round
+  ' Factor is the optional multiple to which you want to round, defaulting to 1
+  Ceiling = (Int(X / Factor) - (X / Factor - Int(X / Factor) > 0)) * Factor
 End Function
+
 'Public Function Floor(ByVal X As Double, Optional ByVal Factor As Double = 1) As Double
 Public Function Floor(X, Factor)
-    ' X is the value you want to round
-    ' is the multiple to which you want to round
-    Floor = Int(X / Factor) * Factor
+  ' X is the value you want to round
+  ' is the multiple to which you want to round
+  Floor = Int(X / Factor) * Factor
 End Function
